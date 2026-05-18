@@ -50,8 +50,8 @@ if submit_button:
             }
             
             try:
-                # Make the POST request to your local FastAPI server
-                response = requests.post("https://geo-audit-platform.onrender.com", json=payload)
+                # FIX 1: Added the exact endpoint '/api/submit-lead' to the URL
+                response = requests.post("https://geo-audit-platform.onrender.com/api/submit-lead", json=payload)
                 
                 # Check the response from the backend
                 if response.status_code == 200:
@@ -63,7 +63,9 @@ if submit_button:
                     st.error(" Invalid data format. Please check your URL (must include http/https) and Email.")
                     
                 else:
-                    st.error(" Something went wrong on the server. Please try again.")
+                    # FIX 2: This will now print the EXACT error code if it fails again
+                    st.error(f" Something went wrong on the server. Error Code: {response.status_code} - {response.text}")
                     
-            except requests.exceptions.ConnectionError:
-                st.error(" Could not connect to the API. Make sure your FastAPI server is running on port 8000!")
+            except Exception as e:
+                # FIX 3: This will catch ANY Streamlit errors, not just connection issues
+                st.error(f"🚨 Streamlit Error: {e}")
