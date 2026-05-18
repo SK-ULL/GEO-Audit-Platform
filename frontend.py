@@ -51,7 +51,7 @@ if submit_button:
             
             try:
                 # Make the POST request to your local FastAPI server
-                response = requests.post("http://127.0.0.1:8000/api/submit-lead", json=payload)
+                response = requests.post("https://geo-audit-platform.onrender.com", json=payload)
                 
                 # Check the response from the backend
                 if response.status_code == 200:
