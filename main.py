@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from services.google_sheets import log_lead_to_sheets
 from services.google_drive import upload_to_drive
 from fastapi import FastAPI, HTTPException, Request
@@ -18,6 +19,13 @@ app = FastAPI(
     title="MLABS GEO Engine",
     description="Automated Generative Engine Optimization Audit API with resilient fallbacks.",
     version="1.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows any site to access your API
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
 )
 
 # --- CUSTOM VALIDATION HANDLER ---
