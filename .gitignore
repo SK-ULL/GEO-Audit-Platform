@@ -1,0 +1,14 @@
+# Environments
+venv/
+env/
+.env
+
+# Google Cloud Credentials
+google-credentials.json
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Generated Files
+*.pdf
