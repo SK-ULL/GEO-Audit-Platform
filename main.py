@@ -27,6 +27,9 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allows all headers
 )
+@app.get("/healthz")
+async def health_check():
+    return {"status": "ok"}
 
 # --- CUSTOM VALIDATION HANDLER ---
 # This catches bad emails/URLs and returns a clean, readable error to the user
