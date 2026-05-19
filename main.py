@@ -55,7 +55,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # --- MAIN API ROUTE ---
 @app.post("/api/submit-lead")
-async def process_lead(lead: LeadInput):
+def process_lead(lead: LeadInput):
     try:
         # The data validation (Email/URL formats) has already happened automatically 
         # by the time the code reaches this point, thanks to FastAPI & Pydantic!
