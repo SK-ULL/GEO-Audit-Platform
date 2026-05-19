@@ -1,59 +1,34 @@
-import smtplib
 import os
-from email.message import EmailMessage
-from dotenv import load_dotenv
-
-load_dotenv()
+import requests
 
 def send_audit_email(recipient_email: str, lead_name: str, pdf_filename: str):
-    """
-    Sends the generated PDF audit to the lead via email.
-    """
-    sender_email = os.getenv("SMTP_EMAIL")
-    sender_password = os.getenv("SMTP_PASSWORD")
+    resend_api_key = os.getenv("RESEND_API_KEY")
+    
+    # Read the PDF as bytes
+    with open(pdf_filename, 'rb') as f:
+        pdf_content = list(f.read()) # Resend needs bytes as a list or base64
 
-    if not sender_email or not sender_password:
-        print("WARNING: Email credentials missing in .env file.")
-        return
+    payload = {
+        "from": "MLABS <onboarding@resend.dev>", # Use this default for testing
+        "to": [recipient_email],
+        "subject": "Your MLABS GEO Audit is Ready!",
+        "html": f"<strong>Hello {lead_name},</strong><br><br>Your GEO audit is attached.",
+        "attachments": [
+            {
+                "filename": pdf_filename,
+                "content": pdf_content
+            }
+        ]
+    }
 
-    # 1. Draft the Email
-    msg = EmailMessage()
-    msg['Subject'] = 'Your MLABS GEO Audit is Ready!'
-    msg['From'] = sender_email
-    msg['To'] = recipient_email
+    headers = {
+        "Authorization": f"Bearer {resend_api_key}",
+        "Content-Type": "application/json"
+    }
 
-    body = f"""Hello {lead_name},
-
-Thank you for requesting a GEO Audit from MLABS. 
-Our AI has finished analyzing your digital footprint. Please find your customized report attached to this email.
-
-Best regards,
-The MLABS Automation Engine
-"""
-    msg.set_content(body)
-
-    # 2. Attach the PDF
-    try:
-        with open(pdf_filename, 'rb') as f:
-            pdf_data = f.read()
-        
-        msg.add_attachment(
-            pdf_data, 
-            maintype='application', 
-            subtype='pdf', 
-            filename=pdf_filename
-        )
-    except FileNotFoundError:
-        print(f"Error: Could not find the file {pdf_filename} to attach.")
-        return
-
-# 3. Send the Email securely via Gmail's SMTP server
-    try:
-        # Use Port 587 and starttls() to bypass Render's port 465 block
-        with smtplib.SMTP('smtp.gmail.com', 587) as server:
-            server.starttls() # This encrypts the connection!
-            server.login(sender_email, sender_password)
-            server.send_message(msg)
-        print(f"Success! Email sent to {recipient_email}")
-    except Exception as e:
-        print(f"Failed to send email. Error: {e}")
+    response = requests.post("https://api.resend.com/emails", json=payload, headers=headers)
+    
+    if response.status_code in [200, 201]:
+        print(f"Success! Email sent via API to {recipient_email}")
+    else:
+        print(f"Failed to send email. API Error: {response.text}")
