@@ -1,3 +1,4 @@
+import os
 import requests
 
 def scrape_company_website(url: str) -> str:
