@@ -1,30 +1,29 @@
 import requests
 
 def scrape_company_website(url: str) -> str:
-    """
-    Attempts to scrape the URL. Includes fallbacks for timeouts, 
-    blocks, and websites with insufficient text.
-    """
     jina_url = f"https://r.jina.ai/{url}"
     
+    # 1. Look for the API key in the environment variables
+    jina_api_key = os.getenv("JINA_API_KEY")
+    
+    # 2. Build the headers
+    headers = {}
+    if jina_api_key:
+        headers["Authorization"] = f"Bearer {jina_api_key}"
+    
     try:
-        # Added a 10-second timeout so the API doesn't hang forever
-        response = requests.get(jina_url, timeout=10)
-        response.raise_for_status() # Catches 404s, 403s, etc.
+        # 3. Pass the headers into the request
+        response = requests.get(jina_url, headers=headers, timeout=15)
+        response.raise_for_status() 
         
         content = response.text
         
-        # SENSE CHECK: Did we actually get enough data?
         if len(content.split()) < 50:
-            print(f"Warning: Scraped content for {url} is too short. Using fallback.")
+            print(f"Warning: Scraped content for {url} is too short.")
             return _get_fallback_company_data(url)
             
         return content
 
-    except requests.exceptions.Timeout:
-        print(f"Error: Scraping timed out for {url}.")
-        return _get_fallback_company_data(url)
-        
     except requests.exceptions.RequestException as e:
         print(f"Error: Scraping failed for {url} - {str(e)}")
         return _get_fallback_company_data(url)
