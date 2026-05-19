@@ -56,3 +56,14 @@ This deployment is the most effective form of the prototype which executes the p
 **Q: Why use Resend instead of standard SMTP?** **A:** Render and most cloud providers block Port 465/587 to prevent spam. Using a Web API (Resend) sends mail over Port 443, which is never blocked. Render blocks use of smtp as it can lead to malicious use for mail spamming.
 
 **Q: Google Drive error: "Service Accounts do not have storage quota"?** **A:** Service accounts start with 0GB. You must create a folder in your personal drive and "Share" it with the service account email (found in your JSON) as an Editor. To prevent this I have not actively initiated the google drive script but you can execute it by simply adding the access to a personal google drive folder and it will keep an archive of all the generated pdfs.
+The pipeline in progress:
+<img width="1800" height="1169" alt="Screenshot 2026-05-19 at 3 01 07 PM" src="https://github.com/user-attachments/assets/b499653d-08ce-41b1-b47f-1fd2f583ae7d" />
+
+The result:
+<img width="1800" height="1169" alt="Screenshot 2026-05-19 at 3 01 47 PM" src="https://github.com/user-attachments/assets/4e2c6a11-821b-4444-a730-8352085b7a8d" />
+
+The updated google sheet leads:
+<img width="1205" height="646" alt="Screenshot 2026-05-19 at 3 03 34 PM" src="https://github.com/user-attachments/assets/1f8642c9-3a2d-4d9f-bf58-cc64d6a58d3a" />
+
+Sample report:
+<img width="811" height="1122" alt="Screenshot 2026-05-19 at 3 07 30 PM" src="https://github.com/user-attachments/assets/4f2766d0-62b8-4479-b3bc-7137735f1594" />
