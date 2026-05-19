@@ -66,4 +66,5 @@ The updated google sheet leads:
 <img width="1205" height="646" alt="Screenshot 2026-05-19 at 3 03 34 PM" src="https://github.com/user-attachments/assets/1f8642c9-3a2d-4d9f-bf58-cc64d6a58d3a" />
 
 Sample report:
+
 <img width="811" height="1122" alt="Screenshot 2026-05-19 at 3 07 30 PM" src="https://github.com/user-attachments/assets/4f2766d0-62b8-4479-b3bc-7137735f1594" />
