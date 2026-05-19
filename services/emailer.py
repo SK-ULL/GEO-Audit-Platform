@@ -47,9 +47,11 @@ The MLABS Automation Engine
         print(f"Error: Could not find the file {pdf_filename} to attach.")
         return
 
-    # 3. Send the Email securely via Gmail's SMTP server
+# 3. Send the Email securely via Gmail's SMTP server
     try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        # Use Port 587 and starttls() to bypass Render's port 465 block
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls() # This encrypts the connection!
             server.login(sender_email, sender_password)
             server.send_message(msg)
         print(f"Success! Email sent to {recipient_email}")
